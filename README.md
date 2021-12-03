@@ -89,7 +89,78 @@ git push
 可执行这个按钮,之后重试  
 [![oatPEt.jpg](https://z3.ax1x.com/2021/12/03/oatPEt.jpg)](https://imgtu.com/i/oatPEt).  
 
-# 三. 遗留问题
+# 三. 笔记
+
+## 1. 新创建
+
+```bash
+# 创建environment
+fission env create --name sql-jvm --image fission/jvm-env --version 2 --keeparchive=true --builder fission/jvm-builder
+# 在env 基础上创建function 命令简称fn
+fission fn create --name  mysql-02 --deploy target/sql-access-fission-1.0-SNAPSHOT-jar-with-dependencies.jar --env sql-jvm --entrypoint io.fission.MysqlAccess
+# 查看fn列表
+fission fn list
+# 创建url请求路径,route创建时不能创建变量, httptrigger可以指定变量,例如下面的 {name}
+# fission route create --function sql-access-fission --url /sql-access-fission --method GET
+fission httptrigger create --method GET --url "/mysq02/{name}" --function mysql-02 
+# 查看http请求列表
+fission httptrigger list
+# 测试fn数据
+fission fn test --name mysql-02
+# 查看地址参数
+kubectl -n fission get svc
+# 拼接地址参数,并且测试
+curl http://10.233.51.50/mysq02/oracle?company=zhangsan&address=shanghai
+```
+## 2. 更新参数
+
+```shell
+# 更新package
+fission fn update --name mysql-02 --deploy target/sql-access-fission-1.0-SNAPSHOT-jar-with-dependencies.jar
+# 测试fn数据
+fission fn test --name mysql-02
+# 查看地址参数
+kubectl -n fission get svc
+# 拼接地址参数,并且测试
+curl http://10.233.51.50/mysq02/oracle?company=zhangsan&address=shanghai
+```
+
+## 3. 删除参数
+`删除 httptrigger(route)`
+```shell
+# 获取列表,请求参数列表
+fission httptrigger list
+# NAME                                 METHOD URL                           FUNCTION(s)        INGRESS HOST PATH                          TLS ANNOTATIONS
+# 621092bc-baf7-4ab2-aace-2621ab64c24c GET    /sql-access-fission-01        sql-access-fission false   *    /sql-access-fission-01            
+# 97137735-1f86-4127-9098-5d962036c3ae GET    /mysql01                      mysql-01           false   *    /mysql01                          
+# 978f3fbc-0cf0-422e-84da-616cc5f060b6 GET    /sql-access-fission/{tblName} sql-access-fission true    *    /sql-access-fission/{tblName}     
+# e998884f-36b6-4dbd-83c1-ea1abaf40b9a GET    /mysq02/{name}                mysql-02           false   *    /mysq02/{name} 
+fission httptrigger delete --name 978f3fbc-0cf0-422e-84da-616cc5f060b6
+# trigger '978f3fbc-0cf0-422e-84da-616cc5f060b6' deleted
+fission httptrigger list
+# NAME                                 METHOD URL                    FUNCTION(s)        INGRESS HOST PATH                   TLS ANNOTATIONS
+# 621092bc-baf7-4ab2-aace-2621ab64c24c GET    /sql-access-fission-01 sql-access-fission false   *    /sql-access-fission-01     
+# 97137735-1f86-4127-9098-5d962036c3ae GET    /mysql01               mysql-01           false   *    /mysql01                   
+# e998884f-36b6-4dbd-83c1-ea1abaf40b9a GET    /mysq02/{name}         mysql-02           false   *    /mysq02/{name}
+```
+`删除function`
+```shell
+fission fn list
+# NAME               ENV     EXECUTORTYPE MINSCALE MAXSCALE MINCPU MAXCPU MINMEMORY MAXMEMORY TARGETCPU SECRETS CONFIGMAPS
+# mysql-01           sql-jvm poolmgr      0        0        0      0      0         0         0                 
+# mysql-02           sql-jvm poolmgr      0        0        0      0      0         0         0                 
+# sql-access-fission java    poolmgr      0        0        0      0      0         0         0                 
+fission fn delete --name sql-access-fission
+# function 'sql-access-fission' deleted
+```
+## 4.  K8S部署
+> 参考连接: https://fission.io/docs/usage/spec/#custom-resources-references
+>
+> 故障排查: https://fission.io/docs/trouble-shooting/setup/fission/
+>
+> spec文件参考:  https://github.com/fission/examples/tree/master/spec-example
+
+# 四. 遗留问题
 
 `2021-12-03` : 未解决  
 [![oaEpvD.jpg](https://z3.ax1x.com/2021/12/03/oaEpvD.jpg)](https://imgtu.com/i/oaEpvD)  
