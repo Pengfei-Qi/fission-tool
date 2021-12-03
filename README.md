@@ -58,7 +58,18 @@ $ fission route create --function hello --url /hellop --method GET
 $ fission fn test --name hello
 Hello World!
 ```
-# 二. 遗留问题
+# 二. GitHub 代码提交
+参考连接: https://stackoverflow.com/questions/46232906/git-clone-error-rpc-failed-curl-56-openssl-ssl-read-ssl-error-syscall-errno  
+ ```shell
+git config --global http.sslVerify "false"
+
+git config --global http.postBuffer 524288000
+
+git push
+```
+
+
+# 三. 遗留问题
 
 `2021-12-03` : 未解决  
 [![oaEpvD.jpg](https://z3.ax1x.com/2021/12/03/oaEpvD.jpg)](https://imgtu.com/i/oaEpvD)  
