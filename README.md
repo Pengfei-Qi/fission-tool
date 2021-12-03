@@ -59,7 +59,26 @@ $ fission fn test --name hello
 Hello World!
 ```
 # 二. GitHub 代码提交
+`正常提交`:  
+```shell
+git add .
+
+git commit -m "添加GitHub 代码提交方式"
+
+git push 
+```
+`异常提交` 出现以下问题:
+```shell
+unable to access 'https://github.com/YearningLife/fission-tool.git/': Failed to connect to github.com port 443: Timed out
+
+git clone error: RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errno 10054
+
+unable to access github: OpenSSL SSL_read: Connection was reset, errno 10054
+```
+
+
 参考连接: https://stackoverflow.com/questions/46232906/git-clone-error-rpc-failed-curl-56-openssl-ssl-read-ssl-error-syscall-errno  
+参考连接: https://juejin.cn/post/6844904193170341896
  ```shell
 git config --global http.sslVerify "false"
 
@@ -67,7 +86,8 @@ git config --global http.postBuffer 524288000
 
 git push
 ```
-
+可执行这个按钮,之后重试  
+[![oatPEt.jpg](https://z3.ax1x.com/2021/12/03/oatPEt.jpg)](https://imgtu.com/i/oatPEt).  
 
 # 三. 遗留问题
 
