@@ -78,16 +78,37 @@ unable to access github: OpenSSL SSL_read: Connection was reset, errno 10054
 
 
 参考连接: https://stackoverflow.com/questions/46232906/git-clone-error-rpc-failed-curl-56-openssl-ssl-read-ssl-error-syscall-errno  
-参考连接: https://juejin.cn/post/6844904193170341896
+参考连接: https://juejin.cn/post/6844904193170341896  
+参考链接: https://stackoverflow.com/questions/55768926/logon-failed-use-ctrlc-to-cancel-basic-credential-prompt-to-git-in-azure-devop
  ```shell
 git config --global http.sslVerify "false"
 
 git config --global http.postBuffer 524288000
 
-git push
+git push 
 ```
 可执行这个按钮,之后重试  
 [![oatPEt.jpg](https://z3.ax1x.com/2021/12/03/oatPEt.jpg)](https://imgtu.com/i/oatPEt).  
+
+2022-01-05 更新
+
+```shell
+# 如果弹出以下提示, 则依次执行命令
+
+# Logon failed, use ctrl+c to cancel basic credential prompt to Git in Azure DevOps
+
+# windows:
+  git update-git-for-windows
+  
+  git push
+
+# Linux/Unix: 
+  git update
+  
+  git push origin branch_name
+
+```
+
 
 # 三. 笔记
 
